@@ -3,7 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from '../utils/env.js';
 
-const PORT = Number(env('PORT', '4000'));
+const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
@@ -18,7 +18,7 @@ export const setupServer = () => {
       },
     }),
   );
-  app.get('./', (req, res) => {
+  app.get('/', (req, res) => {
     res.json({
       message: 'Hello friend',
     });
@@ -27,12 +27,14 @@ export const setupServer = () => {
     res.status(404).json({
       message: 'Not found',
     });
+    next();
   });
   app.use((err, req, res, next) => {
     res.status(500).json({
       message: 'Something went wrong',
       error: err.message,
     });
+    next();
   });
 
   app.listen(PORT, () => {
