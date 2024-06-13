@@ -23,28 +23,49 @@ export const setupServer = () => {
     res.json({
       message: 'Hello friend',
     });
+  });
 
-    app.get('/contacts', async (req, res) => {
+  app.get('/contacts', async (req, res) => {
+    try {
       const contacts = await getAllContacts();
+      if (contacts.length === 0) {
+        res.status(404).json({
+          message: 'No contacts found',
+        });
+        return;
+      }
       res.status(200).json({
         data: contacts,
+        message: 'Successfully found contacts!',
       });
-    });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
   });
 
   app.use('/contacts/:contactId', async (req, res) => {
-    const contact = await getContactById(contactId);
-    if (!contact) {
-      res.status(404).json({
-        message: 'Contact not found',
+    const { contactId } = req.params;
+    try {
+      const contact = await getContactById(contactId);
+      if (!contactId) {
+        res.status(404).json({
+          message: 'Contact not found',
+        });
+        return;
+      }
+      res.status(200).json({
+        data: contact,
+        message: `Successfully found contact with id ${contactId}!`,
       });
-      return;
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
     }
-
-    res.status(200).json({
-      data: contact,
-    });
   });
+
   app.use('*', (req, res, next) => {
     res.status(404).json({
       message: 'Not found',
@@ -60,6 +81,6 @@ export const setupServer = () => {
   });
 
   app.listen(PORT, () => {
-    console.log(`Server is running on post ${PORT}...`);
+    console.log(`Server is running on port ${PORT}...`);
   });
 };
