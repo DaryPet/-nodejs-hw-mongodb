@@ -3,15 +3,15 @@ import { Router } from 'express';
 import {
   createContacts,
   deleteContacts,
-  getAllContacts,
-  getContactById,
+  getAllContactsController,
+  getContactByIdController,
   updateContacts,
 } from '../controllers/contacts.js';
 
 const contactsRouter = Router();
 
-contactsRouter.get('/', getAllContacts);
-contactsRouter.get('/:id', getContactById);
+contactsRouter.get('/', getAllContactsController);
+contactsRouter.get('/:id', getContactByIdController);
 contactsRouter.post('/', createContacts);
 contactsRouter.patch('/', updateContacts);
 contactsRouter.delete('/', deleteContacts);
