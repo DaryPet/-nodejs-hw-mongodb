@@ -4,14 +4,14 @@ import {
   createContacts,
   // deleteContacts,
   getAllContactsController,
-  // getContactByIdController,
+  getContactByIdController,
   // updateContacts,
 } from '../controllers/contacts.js';
 
 const contactsRouter = Router();
 
 contactsRouter.get('/', getAllContactsController);
-// contactsRouter.get('/:id', getContactByIdController);
+contactsRouter.get('/:contactId', getContactByIdController);
 contactsRouter.post('/', createContacts);
 // contactsRouter.patch('/', updateContacts);
 // contactsRouter.delete('/', deleteContacts);

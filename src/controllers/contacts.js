@@ -1,6 +1,6 @@
 import Contacts from '../db/Contact.js';
-import { getAllContacts } from '../services/contacts.js';
-// import createHttpError from 'http-errors';
+import { getAllContacts, getContactById } from '../services/contacts.js';
+import createHttpError from 'http-errors';
 
 export const getAllContactsController = async (req, res) => {
   const contacts = await getAllContacts();
@@ -11,23 +11,24 @@ export const getAllContactsController = async (req, res) => {
   });
 };
 
-// export const getContactByIdController = async (req, res, next) => {
-//   const { contactId } = req.params;
-//   try {
-//     const contact = await getContactById(contactId);
-//     if (!contact) {
-//       throw createHttpError(404, 'Contact not found');
-//     }
+export const getContactByIdController = async (req, res, next) => {
+  const { contactId } = req.params;
 
-//     res.status(200).json({
-//       status: 200,
-//       message: `Successfully found student with id ${contactId}!`,
-//       data: contact,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  try {
+    const contact = await getContactById(contactId);
+    if (!contact) {
+      throw createHttpError(404, 'Contact not found');
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: `Successfully found student with id ${contactId}!`,
+      data: contact,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export async function createContacts(req, res) {
   try {
