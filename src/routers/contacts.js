@@ -1,8 +1,8 @@
 import { Router } from 'express';
 // import { getAllContacts, getContactById } from '../services/contacts.js';
 import {
-  createContacts,
-  // deleteContacts,
+  createContactController,
+  deleteContactsController,
   getAllContactsController,
   getContactByIdController,
   // updateContacts,
@@ -12,8 +12,8 @@ const contactsRouter = Router();
 
 contactsRouter.get('/', getAllContactsController);
 contactsRouter.get('/:contactId', getContactByIdController);
-contactsRouter.post('/', createContacts);
+contactsRouter.post('/', createContactController);
 // contactsRouter.patch('/', updateContacts);
-// contactsRouter.delete('/', deleteContacts);
+contactsRouter.delete('/:contactId', deleteContactsController);
 
 export default contactsRouter;
