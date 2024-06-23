@@ -62,7 +62,7 @@ export async function updateContactController(req, res, next) {
   res.status(200).json({
     status: 200,
     message: 'Succesfully patched a contact',
-    data: contact,
+    data: contact.data,
   });
 }
 
@@ -70,7 +70,7 @@ export async function deleteContactsController(req, res, next) {
   const { contactId } = req.params;
   const contact = await deleteContact(contactId);
   if (!contact) {
-    next(
+    return next(
       createHttpError(404, {
         status: 404,
         message: 'Contact not found',

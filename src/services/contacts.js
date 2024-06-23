@@ -16,15 +16,17 @@ export const createContact = async (payload) => {
 };
 
 export const updateContact = async (contactId, payload, options = {}) => {
-  const contact = await Contact.findOneAndUpdate({ _id: contactId }, payload, {
+  const result = await Contact.findOneAndUpdate({ _id: contactId }, payload, {
     new: true,
     includeResultMetadata: true,
     ...options,
   });
-  if (!contact || !contact.value) return null;
+  if (!result || !result.value) return null;
+
+  const isNew = Boolean(result?.lastErrorObject?.upserted);
   return {
-    contact: contact.value,
-    isNew: Boolean(contact?.lastErrorObject?.upserted),
+    data: result.value,
+    isNew,
   };
 };
 
