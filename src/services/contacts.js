@@ -1,7 +1,9 @@
 import Contact from '../db/Contact.js';
 
-export const getAllContacts = async () => {
-  const contacts = await Contact.find();
+export const getAllContacts = async ({ page, perPage }) => {
+  const limit = perPage;
+  const skip = (page - 1) * limit;
+  const contacts = await Contact.find().skip(skip).limit(limit);
   return contacts;
 };
 
