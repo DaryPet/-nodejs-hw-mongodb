@@ -9,7 +9,6 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder }) => {
     .limit(limit)
     .sort({ [sortBy]: sortOrder });
   const totalContacts = await Contact.countDocuments();
-  // return contacts;
   const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData({
     total: totalContacts,
     perPage,
@@ -18,9 +17,9 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder }) => {
 
   return {
     contacts,
-    totalContacts,
     page,
     perPage,
+    totalContacts,
     totalPages,
     hasPreviousPage,
     hasNextPage,
