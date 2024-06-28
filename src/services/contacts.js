@@ -19,18 +19,20 @@ export const getAllContacts = async ({
     constctsQuery.where('contactType').equals(filter.type);
   }
 
-  if (filter.isFavourite) {
+  if (filter.isFavourite !== null && filter.isFavourite !== undefined) {
     constctsQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
   const contacts = await constctsQuery
     .skip(skip)
     .limit(limit)
-    .sort({ [sortBy]: sortOrder });
+    .sort({ [sortBy]: sortOrder })
+    .exec();
 
   const totalContacts = await Contact.find()
     .merge(constctsQuery)
-    .countDocuments();
+    .countDocuments()
+    .exec();
   const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData({
     total: totalContacts,
     perPage,
