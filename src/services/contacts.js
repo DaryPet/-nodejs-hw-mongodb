@@ -14,11 +14,13 @@ export const getAllContacts = async ({
   const skip = (page - 1) * limit;
 
   const constctsQuery = Contact.find();
+
   if (filter.type) {
     constctsQuery.where('contactType').equals(filter.type);
   }
-  if (filter.isFavorite) {
-    constctsQuery.where('isFavorite').equals(filter.isFavorite);
+
+  if (filter.isFavourite) {
+    constctsQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
   const contacts = await constctsQuery

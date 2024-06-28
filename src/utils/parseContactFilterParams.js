@@ -1,25 +1,40 @@
 import { typeList } from '../constants/contact-constants.js';
 
+// const parseBoolean = (value) => {
+//   if (typeof value !== 'string') {
+//     return;
+//   }
+
+//   if (!['true', 'false'].includes(value)) {
+//     return;
+//   }
+
+//   const parsedValue = Boolean(value);
+//   return parsedValue;
+// };
+
 const parseBoolean = (value) => {
   if (typeof value !== 'string') {
-    return;
+    return null;
   }
 
-  if (!['true', 'false'].includes(value)) {
-    return;
+  if (value === 'true') {
+    return true;
   }
 
-  const parsedValue = Boolean(value);
-  return parsedValue;
+  if (value === 'false') {
+    return false;
+  }
+  return null;
 };
 
-const parseContactFilterParams = ({ type, isFavorite }) => {
+const parseContactFilterParams = ({ type, isFavourite }) => {
   const parsedType = typeList.includes(type) ? type : null;
-  const parsedFavorite = parseBoolean(isFavorite);
+  const parsedFavourite = parseBoolean(isFavourite);
 
   return {
     type: parsedType,
-    isFavorite: parsedFavorite,
+    isFavourite: parsedFavourite,
   };
 };
 
