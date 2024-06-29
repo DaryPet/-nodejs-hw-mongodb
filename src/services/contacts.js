@@ -22,10 +22,13 @@ export const getAllContacts = async ({
   if (filter.isFavourite !== null && filter.isFavourite !== undefined) {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
+  // if (filter.isFavourite) {
+  //   contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  // }
 
   const data = await contactsQuery
     .skip(skip)
-    .limit(perPage)
+    .limit(limit)
     .sort({ [sortBy]: sortOrder })
     .exec();
 
