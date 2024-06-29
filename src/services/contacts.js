@@ -13,24 +13,24 @@ export const getAllContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * limit;
 
-  const constctsQuery = Contact.find();
+  const contactsQuery = Contact.find();
 
   if (filter.type) {
-    constctsQuery.where('contactType').equals(filter.type);
+    contactsQuery.where('contactType').equals(filter.type);
   }
 
   if (filter.isFavourite !== null && filter.isFavourite !== undefined) {
-    constctsQuery.where('isFavourite').equals(filter.isFavourite);
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
-  const contacts = await constctsQuery
+  const contacts = await contactsQuery
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder })
     .exec();
 
   const totalContacts = await Contact.find()
-    .merge(constctsQuery)
+    .merge(contactsQuery)
     .countDocuments()
     .exec();
   const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData({
