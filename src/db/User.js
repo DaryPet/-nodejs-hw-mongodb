@@ -9,7 +9,7 @@ const usersSchema = new Schema(
     },
     email: {
       type: String,
-      match: [/.+@.+\..+/, 'Please enter a valid email address'],
+      //   match: [/.+@.+\..+/, 'Please enter a valid email address'],
       required: true,
       unique: true,
     },
@@ -20,6 +20,12 @@ const usersSchema = new Schema(
   },
   { timestamps: true, versionKey: false },
 );
+
+usersSchema.method.toJSON = function () {
+  const obj = this.Object();
+  delete obj.password;
+  return obj;
+};
 
 usersSchema.post('save', mongooseSaveError);
 
