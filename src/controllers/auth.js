@@ -30,7 +30,7 @@ export const signInUserController = async (req, res) => {
     throw createHttpError(404, 'Email not found');
   }
   const passwordCompare = await compareHash(password, user.password);
-  if (!compareHash) {
+  if (!passwordCompare) {
     throw createHttpError(401, 'Password invalid!');
   }
 
