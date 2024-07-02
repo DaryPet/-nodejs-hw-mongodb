@@ -19,6 +19,15 @@ export const errorHandler = (err, req, res, next) => {
     return;
   }
 
+  if (err.status === 409) {
+    res.status(409).json({
+      status: 409,
+      message: 'Conflict error',
+      data: err.message,
+    });
+    return;
+  }
+
   res.status(500).json({
     status: 500,
     message: 'Something went wrong',
