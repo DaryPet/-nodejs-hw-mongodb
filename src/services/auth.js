@@ -5,7 +5,6 @@ import { SessionsCollection } from '../db/Session.js';
 import { randomBytes } from 'crypto';
 // import createHttpError from 'http-errors';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/indexSort.js';
-import { Session } from 'inspector';
 
 export const findUser = (filter) => User.findOne(filter);
 
@@ -36,4 +35,8 @@ export const createSession = async (userId) => {
   });
 };
 
-export const deleteSession = (filter) => SessionsCollection.deleteOne(filter);
+// export const deleteSession = (filter) => SessionsCollection.deleteOne(filter);
+
+export const deleteSession = async (sessionId) => {
+  await SessionsCollection.deleteOne({ _id: sessionId });
+};
