@@ -59,10 +59,7 @@ export const getAllContacts = async ({
 //   return contact;
 // };
 
-export const getContact = async (filter) => {
-  const contact = await Contact.findOne(contactId);
-  return contact;
-};
+export const getContact = (filter) => Contact.findOne(filter);
 
 export const createContact = async (payload) => {
   const contact = await Contact.create(payload);
