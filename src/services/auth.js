@@ -3,7 +3,6 @@ import User from '../db/User.js';
 import { hashValue } from '../utils/hash.js';
 import { SessionsCollection } from '../db/Session.js';
 import { randomBytes } from 'crypto';
-// import createHttpError from 'http-errors';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/indexSort.js';
 
 export const findUser = (filter) => User.findOne(filter);
