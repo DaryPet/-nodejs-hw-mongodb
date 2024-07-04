@@ -1,6 +1,8 @@
 import { signUpUser, findUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
+import { createSession } from '../services/session.js';
+// import { refreshTokenValidUntil, accessTokenValidUntil } from '../services';
 
 export const signUpUserController = async (req, res) => {
   const { email } = req.body;
@@ -34,11 +36,24 @@ export const signInUserController = async (req, res) => {
     throw createHttpError(401, 'Password invalid!');
   }
 
-  const accessToken = '56778.89';
-  const refreshToken = '0098979.977866';
+  const { accessToken, refreshToken, _id, refreshTokenValidUntil } =
+    await createSession(user._id);
+
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.cookie('sessionId', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
 
   res.json({
-    accessToken,
-    refreshToken,
+    status: 200,
+    message: 'Successfully logged in an user!',
+    data: {
+      accessToken: accessToken,
+    },
   });
 };
