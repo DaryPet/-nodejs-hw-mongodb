@@ -1,8 +1,7 @@
 import { signUpUser, findUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
-import { createSession } from '../services/session.js';
-// import { refreshTokenValidUntil, accessTokenValidUntil } from '../services';
+import { createSession } from '../services/auth.js';
 
 export const signUpUserController = async (req, res) => {
   const { email } = req.body;
