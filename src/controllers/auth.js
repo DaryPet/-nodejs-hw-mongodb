@@ -95,7 +95,8 @@ export const logoutController = async (req, res) => {
     throw createHttpError(401, 'Session is not found');
   }
 
-  await deleteSession({ id: sessionId });
+  // await deleteSession({ id: sessionId });
+  await deleteSession(sessionId);
 
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');

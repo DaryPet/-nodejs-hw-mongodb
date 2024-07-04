@@ -12,7 +12,7 @@ const authentificate = async (req, res, next) => {
   const bearer = authHeader.split(' ')[0];
   const token = authHeader.split(' ')[1];
 
-  if (!bearer == 'Bearer') {
+  if (bearer !== 'Bearer') {
     next(createHttpError(401, 'Auth header should be of type Bearer'));
     return;
   }
@@ -40,7 +40,7 @@ const authentificate = async (req, res, next) => {
   }
 
   req.user = user;
-  // req.session = session;
+  req.session = session;
 
   next();
 };
