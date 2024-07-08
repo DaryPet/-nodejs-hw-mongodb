@@ -54,10 +54,16 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContactById = (filter) => Contact.findOne(filter);
+// export const getContactById = ({ _id, userId }) =>
+//   Contact.findOne({ _id, userId });
 
 export const createContact = async (payload) => {
   const contact = await Contact.create(payload);
+  return contact;
+};
+export const getContactById = async (filter) => {
+  console.log(filter);
+  const contact = await Contact.findOne(filter);
   return contact;
 };
 
