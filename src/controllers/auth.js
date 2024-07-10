@@ -2,7 +2,7 @@ import { signUpUser, findUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
 import { createSession, findSession, deleteSession } from '../services/auth.js';
-import { requestResetToken, resetPassword } from '../services/auth.js';
+// import { requestResetToken, resetPassword } from '../services/auth.js';
 
 const setupResponseSession = (
   res,
@@ -119,7 +119,7 @@ export const requestResetEmailController = async (req, res) => {
 };
 
 export const resetPasswordController = async (req, res) => {
-  await resetPassword(req.body);
+  // await resetPassword(req.body);
   res.json({
     status: 200,
     message: 'Password was successfully sent!',
