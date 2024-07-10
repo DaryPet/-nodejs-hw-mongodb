@@ -2,6 +2,7 @@ import { signUpUser, findUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
 import { createSession, findSession, deleteSession } from '../services/auth.js';
+import { requestResetToken, resetPassword } from '../services/auth.js';
 
 const setupResponseSession = (
   res,
@@ -94,12 +95,33 @@ export const logoutController = async (req, res) => {
   if (!sessionId) {
     throw createHttpError(401, 'Session is not found');
   }
-
-  // await deleteSession({ id: sessionId });
   await deleteSession(sessionId);
 
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
+
+export const requestResetEmailController = async (req, res) => {
+  // const { email } = req.body;
+  // const user = await findUser({ email });
+  // if (!user) {
+  //   throw createHttpError(401, 'Email not found');
+  // }
+
+  await requestResetToken(req.body.email);
+  res.json({
+    status: 200,
+    message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+  res.json({
+    status: 200,
+    message: 'Password was successfully sent!',
+  });
 };
