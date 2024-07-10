@@ -67,7 +67,7 @@ export const requestResetToken = async (email) => {
     from: env(SMTP.SMTP_FROM),
     to: email,
     subject: 'Reset your password',
-    html: `  <p> CLick <a target="_blank" href="${env(
+    html: `<p> CLick <a target="_blank" href="${env(
       'APP_DOMAIN',
     )}/reset-password?token=${resetToken}">here</a> to reset your password </p>`,
   });
