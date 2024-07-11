@@ -11,6 +11,7 @@ import parseSortParams from '../utils/parseSortParams.js';
 import { constantsFieldList } from '../constants/contact-constants.js';
 import parseContactFilterParams from '../utils/parseContactFilterParams.js';
 import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getAllContactsController = async (req, res) => {
   const { _id: userId } = req.user;
@@ -37,7 +38,6 @@ export const getContactByIdController = async (req, res, next) => {
   const userId = req.user._id;
 
   const contact = await getContactById({ _id: contactId, userId });
-  // const contact = await getContactById(id, userId);
 
   if (!contact) {
     return next(createHttpError(404, 'Contact not found'));
@@ -53,8 +53,11 @@ export const getContactByIdController = async (req, res, next) => {
 export async function createContactController(req, res) {
   const { _id: userId } = req.user;
   let photo = '';
+  // if (req.file) {
+  //   photo = await saveFileToPublicDir(req.file, 'photo');
+  // }
   if (req.file) {
-    photo = await saveFileToPublicDir(req.file, 'photo');
+    photo = await saveFileToCloudinary(req.file, 'photo');
   }
   const contact = await createContact({ ...req.body, userId, photo });
   res.status(201).json({
