@@ -22,6 +22,3 @@ export const sendEmail = async (options) => {
     throw createHttpError(500, 'Failed to send email', error);
   }
 };
-// console.log('SMTP Host:', env(SMTP.SMTP_HOST));
-// console.log('SMTP Port:', env(SMTP.SMTP_PORT));
-// console.log('SMTP User:', env(SMTP.SMTP_USER));

@@ -1,5 +1,5 @@
 import User from '../db/User.js';
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { hashValue } from '../utils/hash.js';
 import { SessionsCollection } from '../db/Session.js';
@@ -59,9 +59,10 @@ export const requestResetToken = async (email) => {
     },
     env('JWT_SECRET'),
     {
-      expiresIn: '15m',
+      expiresIn: '5m',
     },
   );
+  console.log(resetToken);
 
   await sendEmail({
     from: env(SMTP.SMTP_FROM),
@@ -71,4 +72,28 @@ export const requestResetToken = async (email) => {
       'APP_DOMAIN',
     )}/reset-password?token=${resetToken}">here</a> to reset your password </p>`,
   });
+};
+
+export const resetPassword = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+  } catch (error) {
+    if (error instanceof Error)
+      throw createHttpError(401, error.message, 'Token is expired or invalid.');
+    throw error;
+  }
+
+  const user = await User.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await User.updateOne({ _id: user._id }, { password: encryptedPassword });
 };
