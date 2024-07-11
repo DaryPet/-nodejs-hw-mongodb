@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import upload from '../middlewares/upload.js';
 import {
   createContactController,
   deleteContactsController,
@@ -27,11 +28,13 @@ contactsRouter.get(
 );
 contactsRouter.post(
   '/',
+  upload.single('photo'),
   validateBody(contactsAddShema),
   ctrlWrapper(createContactController),
 );
 contactsRouter.patch(
   '/:contactId',
+  upload.single('photo'),
   isValidId,
   validateBody(contactsUpdateShema),
   ctrlWrapper(updateContactController),
