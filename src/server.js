@@ -2,6 +2,7 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
+import { PUBLIC_DIR } from './constants/index.js';
 // import contactsRouter from './routers/contacts.js';
 // import authRouter from './routers/auth.js';
 import router from './routers/index.js';
@@ -15,6 +16,7 @@ export const setupServer = () => {
   const app = express();
 
   app.use(express.json());
+  app.use(express.static(PUBLIC_DIR));
   app.use(cors());
   app.use(cookieParser());
 
