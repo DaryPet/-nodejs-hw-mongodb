@@ -3,6 +3,8 @@ import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
 import { createSession, findSession, deleteSession } from '../services/auth.js';
 import { requestResetToken, resetPassword } from '../services/auth.js';
+import { generateAuthUrl } from '../utils/googleOAuth2.js';
+import { loginOrSignupWithGoogle } from '../services/auth.js';
 
 const setupResponseSession = (
   res,
@@ -83,7 +85,7 @@ export const refreshController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully logged in an user!',
+    message: 'Successfully logged/refreshed in an user!',
     data: {
       accessToken: newSession.accessToken,
     },
@@ -119,5 +121,51 @@ export const resetPasswordController = async (req, res) => {
     status: 200,
     message: 'Password was successfully resent!',
     data: {},
+  });
+};
+
+export const getGoogleOAuthUrlController = async (req, res) => {
+  const url = generateAuthUrl();
+  res.json({
+    status: 200,
+    message: 'Successfully get Google OAuth url!',
+    data: {
+      url,
+    },
+  });
+};
+
+// export const loginWithGoogleController = async (req, res) => {
+//   // const { code } = req.body;
+//   // console.log('Received code:', code);
+//   // const user = await loginOrSignupWithGoogle(code);
+//   // console.log('User after login/signup:', user);
+//   // if (!user) {
+//   //   throw new Error('Google login failed');
+//   // }
+//   // const session = await createSession(req.body.code);
+//   // console.log('Created session:', session);
+//   const session = await loginOrSignupWithGoogle(req.body.code);
+//   setupResponseSession(res, session);
+
+//   res.json({
+//     status: 200,
+//     message: 'Successfully logged in via Google OAuth!',
+//     data: {
+//       accessToken: session.accessToken,
+//     },
+//   });
+// };
+
+export const loginWithGoogleController = async (req, res) => {
+  const session = await loginOrSignupWithGoogle(req.body.code);
+  setupResponseSession(res, session);
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged in via Google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
   });
 };
