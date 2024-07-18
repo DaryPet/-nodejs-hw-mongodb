@@ -1,3 +1,6 @@
+// import Joi from 'joi';
+// import { loginWithGoogleOAuthSchema } from '../validation/auth.js';
+
 import { signUpUser, findUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { compareHash } from '../utils/hash.js';
@@ -44,6 +47,7 @@ export const signUpUserController = async (req, res) => {
 
 export const signInUserController = async (req, res) => {
   const { email, password } = req.body;
+  console.log('La la la');
   const user = await findUser({ email });
   if (!user) {
     throw createHttpError(404, 'Email not found');
@@ -134,28 +138,6 @@ export const getGoogleOAuthUrlController = async (req, res) => {
     },
   });
 };
-
-// export const loginWithGoogleController = async (req, res) => {
-//   // const { code } = req.body;
-//   // console.log('Received code:', code);
-//   // const user = await loginOrSignupWithGoogle(code);
-//   // console.log('User after login/signup:', user);
-//   // if (!user) {
-//   //   throw new Error('Google login failed');
-//   // }
-//   // const session = await createSession(req.body.code);
-//   // console.log('Created session:', session);
-//   const session = await loginOrSignupWithGoogle(req.body.code);
-//   setupResponseSession(res, session);
-
-//   res.json({
-//     status: 200,
-//     message: 'Successfully logged in via Google OAuth!',
-//     data: {
-//       accessToken: session.accessToken,
-//     },
-//   });
-// };
 
 export const loginWithGoogleController = async (req, res) => {
   const session = await loginOrSignupWithGoogle(req.body.code);

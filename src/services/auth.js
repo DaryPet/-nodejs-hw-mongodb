@@ -16,10 +16,6 @@ import {
   validateCode,
 } from '../utils/googleOAuth2.js';
 
-// import mongoose from 'mongoose';
-
-// const { ObjectId } = mongoose.Types;
-
 export const findUser = (filter) => User.findOne(filter);
 
 export const signUpUser = async (payload) => {
@@ -33,6 +29,7 @@ export const signUpUser = async (payload) => {
 export const findSession = (filter) => SessionsCollection.findOne(filter);
 
 export const createSession = async (userId) => {
+  console.log('ta ta ta');
   await SessionsCollection.deleteOne({ userId });
 
   const accessToken = randomBytes(30).toString('base64');
@@ -48,8 +45,6 @@ export const createSession = async (userId) => {
     refreshTokenValidUntil,
   });
 };
-
-// export const deleteSession = (filter) => SessionsCollection.deleteOne(filter);
 
 export const deleteSession = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
@@ -107,28 +102,6 @@ export const resetPassword = async (payload) => {
   await User.updateOne({ _id: user._id }, { password: encryptedPassword });
 };
 
-// export const loginOrSignupWithGoogle = async (code) => {
-//   const loginTicket = await validateCode(code);
-//   const payload = loginTicket.getPayload();
-//   if (!payload) throw createHttpError(401);
-
-//   let user = await User.findOne({ email: payload.email });
-//   if (!user) {
-//     const password = await bcrypt.hash(randomBytes(10), 10);
-//     user = await User.create({
-//       email: payload.email,
-//       name: getFullNameFromGoogleTokenPayload(payload),
-//       password,
-//     });
-//   }
-//   const newSession = createSession();
-
-//   return await SessionsCollection.create({
-//     userId: user._id,
-//     ...newSession,
-//   });
-// };
-
 export const loginOrSignupWithGoogle = async (code) => {
   const loginTicket = await validateCode(code);
   const payload = loginTicket.getPayload();
@@ -144,10 +117,11 @@ export const loginOrSignupWithGoogle = async (code) => {
     });
   }
 
-  const newSession = createSession();
+  const newSession = await createSession(user._id);
+  return newSession;
 
-  return await SessionsCollection.create({
-    userId: user._id,
-    ...newSession,
-  });
+  // return await SessionsCollection.create({
+  //   userId: user._id,
+  //   ...newSession,
+  // });
 };

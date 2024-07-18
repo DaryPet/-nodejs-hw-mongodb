@@ -1,10 +1,9 @@
 import express from 'express';
-// import pino from 'pino-http';
+import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import { PUBLIC_DIR } from './constants/index.js';
-// import contactsRouter from './routers/contacts.js';
-// import authRouter from './routers/auth.js';
+
 import router from './routers/index.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -20,13 +19,13 @@ export const setupServer = () => {
   app.use(cors());
   app.use(cookieParser());
 
-  // app.use(
-  //   pino({
-  //     transport: {
-  //       target: 'pino-pretty',
-  //     },
-  //   }),
-  // );
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
 
   app.get('/', (req, res) => {
     res.json({
@@ -34,8 +33,6 @@ export const setupServer = () => {
     });
   });
 
-  // app.use('/auth', authRouter);
-  // app.use('/contacts', contactsRouter);
   app.use(router);
 
   app.use('*', notFoundHandler);
