@@ -17,7 +17,7 @@ properties:
     description: "Contact's phone number"
     type: number
     example: 1278078675
-  gender:
+  contactType:
     description: "Contact's type"
     type: string
     enum: ['work', 'home', 'personal']
