@@ -49,8 +49,7 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "email"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -475,12 +474,12 @@
             "type": "string",
             "example": "John Doe"
           },
-          "age": {
+          "phoneNumber": {
             "description": "Contact's phone number",
             "type": "number",
             "example": 1278078675
           },
-          "gender": {
+          "contactType": {
             "description": "Contact's type",
             "type": "string",
             "enum": [
